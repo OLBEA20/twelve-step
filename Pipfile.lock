@@ -1,0 +1,28 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "d19936e719b7400c55547153370564fa35d6de11ed9738ef68d0221056f22cb2"
+        },
+        "pipfile-spec": 6,
+        "requires": {
+            "python_version": "3.6"
+        },
+        "sources": [
+            {
+                "name": "pypi",
+                "url": "https://pypi.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "jivago-streams": {
+            "hashes": [
+                "sha256:27c838ccfc3ccb04cbc2bc2b3453b44a96f6806aefddf0edc13f006751391687"
+            ],
+            "index": "pypi",
+            "version": "==0.5.5"
+        }
+    },
+    "develop": {}
+}
