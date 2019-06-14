@@ -35,13 +35,26 @@ def find_imported_classes(file_to_imports: Tuple[str, List[str]]) -> Tuple[str, 
     return (file_to_imports[0], classes)
 
 
-def find_imports(file_path:str) -> List[str]:
+def contract_line(file, line: str) -> str:
+    line = line.replace("(", "")
+    new_line = file.readline()
+    while ")" not in new_line:
+        line += new_line
+        new_line = file.readline()
+    line = line.replace("\n", "")
+    return line
+
+
+def find_imports(file_path: str) -> List[str]:
     imports = []
     with open(file_path) as file:
         line = file.readline()
         while line:
-            if line.startswith("from") and "typing" not in line:
-                imports.append(line[:-1])
+            if line.startswith("from ") and "typing" not in line:
+                if "(" in line:
+                    imports.append(contract_line(file, line))
+                else:
+                    imports.append(line[:-1])
             line = file.readline()
 
     return imports
@@ -58,7 +71,7 @@ if __name__ == "__main__":
 
     for (path, directories, files) in walk(args.project_path):
         Stream(files) \
-            .filter(lambda file: ".pyc" not in file) \
+            .filter(lambda file: file.endswith(".py")) \
             .map(lambda file: f"{path}/{file}") \
             .map(lambda file_path: (file_path, find_imports(file_path))) \
             .map(find_imported_classes) \
