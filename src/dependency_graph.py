@@ -22,19 +22,6 @@ def find_classes(file_to_imported_classes: Tuple[str, List[str]]) -> List[Tuple[
     return Stream(classes).map(lambda clasz: (clasz, file_to_imported_classes[1])).toList()
 
 
-IMPORT_KEYWORD = " import "
-
-
-def find_imported_classes(file_to_imports: Tuple[str, List[str]]) -> Tuple[str, List[str]]:
-    classes = []
-    for imp in file_to_imports[1]:
-        import_location = imp.index(IMPORT_KEYWORD) + len(IMPORT_KEYWORD)
-        class_imported = imp[import_location:]
-        classes += class_imported.replace(" ", "").split(',')
-    classes = Stream(classes).filter(lambda class_name: len(class_name) > 0).toList()
-    return (file_to_imports[0], classes)
-
-
 def remove_new_line_character(file_to_imports: Tuple[str, List[str]]) -> Tuple[str, List[str]]:
     lines_without_new_line_characters = []
     for line in file_to_imports[1]:

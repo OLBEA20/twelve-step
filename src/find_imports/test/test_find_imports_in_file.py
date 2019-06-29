@@ -1,8 +1,8 @@
 import unittest
 
-from src.find_imports_in_file import find_imports_in_file
+from ..find_imports_in_file import find_imports_in_file
 
-FILE_BASE_PATH = "./src/test/resources"
+FILE_BASE_PATH = "./src/find_imports/test/resources"
 
 class FindImportsInFileTest(unittest.TestCase):
 
