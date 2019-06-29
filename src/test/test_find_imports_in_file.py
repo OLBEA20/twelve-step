@@ -1,10 +1,10 @@
 import unittest
 
-from src.dependency_graph import find_imports_in_file
+from src.find_imports_in_file import find_imports_in_file
 
 FILE_BASE_PATH = "./src/test/resources"
 
-class DependencyGraphTest(unittest.TestCase):
+class FindImportsInFileTest(unittest.TestCase):
 
     def test_whenFindingImports_thenLineStartingWithFromKeyWordAreRetained(self):
         lines = find_imports_in_file(f"{FILE_BASE_PATH}/test_file.py")

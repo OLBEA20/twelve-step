@@ -22,26 +22,18 @@ def find_classes(file_to_imported_classes: Tuple[str, List[str]]) -> List[Tuple[
     return Stream(classes).map(lambda clasz: (clasz, file_to_imported_classes[1])).toList()
 
 
+IMPORT_KEYWORD = " import "
+
 
 def find_imported_classes(file_to_imports: Tuple[str, List[str]]) -> Tuple[str, List[str]]:
     classes = []
     for imp in file_to_imports[1]:
-        import_location = imp.index(" import ") + len(" import ")
+        import_location = imp.index(IMPORT_KEYWORD) + len(IMPORT_KEYWORD)
         class_imported = imp[import_location:]
         classes += class_imported.replace(" ", "").split(',')
-    if "" in classes:
-        classes.remove("")
+    classes = Stream(classes).filter(lambda class_name: len(class_name) > 0).toList()
     return (file_to_imports[0], classes)
 
-
-def contract_line(file, line: str) -> str:
-    line = line.replace("(", "")
-    new_line = file.readline()
-    while ")" not in new_line:
-        line += new_line
-        new_line = file.readline()
-    line = line.replace("\n", "")
-    return line
 
 def remove_new_line_character(file_to_imports: Tuple[str, List[str]]) -> Tuple[str, List[str]]:
     lines_without_new_line_characters = []
@@ -49,28 +41,3 @@ def remove_new_line_character(file_to_imports: Tuple[str, List[str]]) -> Tuple[s
         lines_without_new_line_characters.append(line.replace("\n", ""))
 
     return (file_to_imports[0], lines_without_new_line_characters)
-
-
-def _multi_line_import(line: str) -> bool:
-    return "(" in line
-
-
-def _contains_import(line: str) -> bool:
-    return line.startswith("from ")
-
-
-def find_imports(file) -> List[str]:
-    imports = []
-    line = file.readline()
-    while line:
-        if _contains_import(line):
-            if _multi_line_import(line):
-                imports.append(contract_line(file, line))
-            else:
-                imports.append(line)
-        line = file.readline()
-    return imports
-
-def find_imports_in_file(file_path: str) -> List[str]:
-    with open(file_path) as file:
-        return find_imports(file)
