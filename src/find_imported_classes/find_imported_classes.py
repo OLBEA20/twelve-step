@@ -5,12 +5,14 @@ IMPORT_KEYWORD = " import "
 
 
 def find_imported_classes(file, imports: List[str]) -> Tuple[str, List[str]]:
-    classes = Stream(imports) \
-        .map(_keep_only_classes_portion_of_import_line) \
-        .map(_extract_classes) \
-        .flat() \
-        .filter(_empty_class_name) \
+    classes = (
+        Stream(imports)
+        .map(_keep_only_classes_portion_of_import_line)
+        .map(_extract_classes)
+        .flat()
+        .filter(_empty_class_name)
         .toList()
+    )
     return (file, classes)
 
 
@@ -19,7 +21,7 @@ def _import_location_in_line(import_line: str) -> int:
 
 
 def _keep_only_classes_portion_of_import_line(import_line: str) -> str:
-    return import_line[_import_location_in_line(import_line):]
+    return import_line[_import_location_in_line(import_line) :]
 
 
 def _extract_classes(classes: str) -> List[str]:
@@ -28,5 +30,3 @@ def _extract_classes(classes: str) -> List[str]:
 
 def _empty_class_name(class_name: str) -> bool:
     return len(class_name) > 0
-
-

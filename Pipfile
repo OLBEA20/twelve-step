@@ -5,9 +5,13 @@ verify_ssl = true
 
 [dev-packages]
 flake8 = "*"
+black = "*"
 
 [packages]
 jivago-streams = "*"
 
 [requires]
 python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true

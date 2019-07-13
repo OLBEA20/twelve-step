@@ -1,0 +1,11 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - pip install pipenv
+      - pipenv install --ignore-pipfile
+  build:
+    commands:
+      - echo Executing unit tests
+      - pipenv run python -m unittest discover
