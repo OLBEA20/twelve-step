@@ -72,5 +72,7 @@ coverage.xml
 #terraform
 *.tfvars
 .terraform
+.tfstate
+.tfstate.backup
 
 

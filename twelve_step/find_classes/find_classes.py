@@ -3,13 +3,11 @@ from typing import List, Tuple
 CLASS_KEYWORD = "class "
 
 
-def find_classes(
-    file_to_imported_classes: Tuple[str, List[str]]
-) -> List[Tuple[str, List[str]]]:
-    with open(file_to_imported_classes[0]) as file:
+def find_classes(file: str, imported_classes: List[str]) -> List[Tuple[str, List[str]]]:
+    with open(file) as file:
         lines = file.readlines()
         classes = _find_classes_in(lines)
-    return [(clazz, file_to_imported_classes[1]) for clazz in classes]
+    return [(clazz, imported_classes) for clazz in classes]
 
 
 def _find_classes_in(lines: List[str]):

@@ -4,7 +4,7 @@ from typing import List, Tuple
 IMPORT_KEYWORD = " import "
 
 
-def find_imported_classes(file, imports: List[str]) -> Tuple[str, List[str]]:
+def find_imported_classes_in_imports(file, imports: List[str]) -> Tuple[str, List[str]]:
     classes = (
         Stream(imports)
         .map(_keep_only_classes_portion_of_import_line)

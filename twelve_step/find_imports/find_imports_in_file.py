@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 
 def find_imports_in_file(file_path: str) -> List[str]:
