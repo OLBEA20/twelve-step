@@ -1,0 +1,51 @@
+name: MAIN
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  Test:
+    name: Test
+    runs-on: ubuntu-latest
+    container: python:3.7
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install pipenv
+        run: pip install pipenv
+      - name: Install dependencies
+        run: pipenv install --ignore-pipfile
+      - name: Run unit tests
+        run: pipenv run python -m unittest discover
+
+  Build:
+    name: Build
+    needs: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install deploy dependencies
+        run: |
+          python3 -m pip install --user --upgrade setuptools
+          python3 -m pip install --user twine
+
+      - name: Build package
+        run: python3 setup.py sdist
+
+      - name: Push package to pypi
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        run: python3 -m twine upload -u __token__ -p $PYPI_TOKEN dist/*
+
+      - name: Tag version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./devops/create_tag.sh
+
+      - name: Update version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./devops/upate_version.sh

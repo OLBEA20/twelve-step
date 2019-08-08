@@ -1,15 +1,20 @@
 from setuptools import setup, find_packages
 
+
+def get_version():
+    with open("version.txt", "r") as version_file:
+        return version_file.readline()
+
+
 setup(
     name="twelve_step",
     packages=find_packages(exclude=["*test*"]),
-    version="0.0.5",
+    version=get_version(),
     license="MIT",
     description="A package to analyze project dependencies.",
     author="Olivier Beaulieu",
     author_email="beaulieu.olivier@hotmail.com",
     url="https://github.com/OLBEA20/twelve-step",
-    download_url="https://github.com/OLBEA20/twelve-step/archive/v_01.tar.gz",  # TODO Add tag
     keywords=["Dependency", "Analysis", "Dependencies", "Graph"],
     install_requires=["jivago-streams"],
     classifiers=[
