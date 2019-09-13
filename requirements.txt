@@ -1,2 +1,0 @@
--i https://pypi.org/simple
-jivago-streams==0.5.5
