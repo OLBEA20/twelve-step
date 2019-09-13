@@ -48,4 +48,4 @@ jobs:
       - name: Update version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./devops/upate_version.sh
+        run: ./devops/update_version.sh
