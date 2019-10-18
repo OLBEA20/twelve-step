@@ -1,9 +1,9 @@
-from typing import List
+from typing import List, Tuple
 
 
-def find_imports_in_file(file_path: str) -> List[str]:
+def find_imports_in_file(file_path: str) -> Tuple[str, List[str]]:
     with open(file_path) as file:
-        return _find_imports(file)
+        return (file_path, _find_imports(file))
 
 
 def _find_imports(file) -> List[str]:

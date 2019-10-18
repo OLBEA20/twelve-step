@@ -43,7 +43,7 @@ jobs:
       - name: Tag version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./devops/create_tag.sh
+        run: ./devops/create_tag.sh $(cat ./twelve_step/version.txt)
 
       - name: Update version
         env:
