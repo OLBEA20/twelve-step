@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 def get_version():
-    with open("./version.txt", "r") as version_file:
+    with open("./twelve_step/version.txt", "r") as version_file:
         return version_file.readline()
 
 
