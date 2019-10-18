@@ -7,7 +7,7 @@ FILE_BASE_PATH = "./twelve_step/find_imports/test/resources"
 
 class FindImportsInFileTest(unittest.TestCase):
     def test_whenFindingImports_thenLineStartingWithFromKeyWordAreRetained(self):
-        lines = find_imports_in_file(f"{FILE_BASE_PATH}/test_file.py")
+        lines = find_imports_in_file(f"{FILE_BASE_PATH}/test_file.py")[1]
 
         self.assertEqual(2, len(lines))
         self.assertIn(
@@ -21,11 +21,11 @@ class FindImportsInFileTest(unittest.TestCase):
     def test_givenFromIsPresentInNaming_whenFindingImports_thenItIsNotConfusedWithAnActualImports(
         self
     ):
-        lines = find_imports_in_file(f"{FILE_BASE_PATH}/file_containing_from.py")
+        lines = find_imports_in_file(f"{FILE_BASE_PATH}/file_containing_from.py")[1]
 
         self.assertEqual(0, len(lines))
 
     def test_givenMultiLineImport_thenAllImportsAreContractedToALine(self):
-        lines = find_imports_in_file(f"{FILE_BASE_PATH}/multi_line_imports.py")
+        lines = find_imports_in_file(f"{FILE_BASE_PATH}/multi_line_imports.py")[1]
 
         self.assertIn("from main import     find_imports,     find_classes", lines)

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 git config --global user.name github-actions[bot]
 git remote set-url origin "https://github-actions[bot]:${GITHUB_TOKEN}@github.com/OLBEA20/twelve-step.git"
 
