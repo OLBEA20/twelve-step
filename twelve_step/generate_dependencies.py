@@ -1,4 +1,8 @@
 from os import walk
+from os.path import dirname, basename
+from twelve_step.find_imported_packages.find_imported_packages import (
+    find_imported_packages_in_imports,
+)
 from typing import List, Callable, Tuple
 
 from jivago_streams import Stream
@@ -10,10 +14,45 @@ from twelve_step.find_imported_classes.find_imported_classes_in_imports import (
 from twelve_step.find_imports.find_imports_in_file import find_imports_in_file
 
 
-def generate_dependencies(
+def generate_class_dependencies(
     project_path: str, excluded_packages: Callable[[str], bool]
 ) -> List[Tuple[str, List[str]]]:
 
+    return generate_dependencies(
+        project_path, excluded_packages, _generate_class_dependencies
+    )
+
+
+def _generate_class_dependencies(
+    path: str, files: List[str], in_excluded_packages: Callable[[str], bool]
+) -> List[Tuple[str, List[str]]]:
+
+    return (
+        _find_all_imports(files, path, in_excluded_packages)
+        .map(find_imported_classes_in_imports)
+        .map(remove_new_line_character)
+        .map(find_classes)
+        .flat()
+        .toList()
+    )
+
+
+def generate_packages_dependencies(
+    project_path: str, excluded_packages: Callable[[str], bool]
+) -> List[Tuple[str, List[str]]]:
+
+    return generate_dependencies(
+        project_path, excluded_packages, _generate_packages_dependencies
+    )
+
+
+def generate_dependencies(
+    project_path: str,
+    excluded_packages: Callable[[str], bool],
+    _generate_dependencies: Callable[
+        [str, List[str], Callable], List[Tuple[str, List[str]]]
+    ],
+) -> List[Tuple[str, List[str]]]:
     nested_dependencies = [
         _generate_dependencies(path, files, excluded_packages)
         for path, directories, files in walk(project_path)
@@ -25,9 +64,26 @@ def generate_dependencies(
     ]
 
 
-def _generate_dependencies(
+def _generate_packages_dependencies(
     path: str, files: List[str], in_excluded_packages: Callable[[str], bool]
 ) -> List[Tuple[str, List[str]]]:
+    def extract_package(
+        file: str, imported_packages: List[str]
+    ) -> Tuple[str, List[str]]:
+        return (basename(dirname(file)), imported_packages)
+
+    return (
+        _find_all_imports(files, path, in_excluded_packages)
+        .map(find_imported_packages_in_imports)
+        .map(remove_new_line_character)
+        .map(extract_package)
+        .toList()
+    )
+
+
+def _find_all_imports(
+    files: List[str], path: str, in_excluded_packages: Callable[[str], bool]
+) -> Stream:
     remove_excluded_packages_from_imports = construct_remove_excluded_packages_from_imports(
         in_excluded_packages
     )
@@ -45,16 +101,11 @@ def _generate_dependencies(
         .filter(excluded_packages)
         .map(find_imports_in_file)
         .map(remove_excluded_packages_from_imports)
-        .map(find_imported_classes_in_imports)
-        .map(remove_new_line_character)
-        .map(find_classes)
-        .flat()
-        .toList()
     )
 
 
 def python_file(file):
-    return file.endswith("py")
+    return file.endswith(".py")
 
 
 def construct_remove_excluded_packages_from_imports(

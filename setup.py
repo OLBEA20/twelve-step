@@ -6,6 +6,11 @@ def get_version():
         return version_file.readline()
 
 
+def get_description():
+    with open("README.md", encoding="utf-8") as readme_file:
+        return readme_file.read()
+
+
 setup(
     name="twelve_step",
     packages=find_packages(exclude=["*test*"]),
@@ -13,6 +18,8 @@ setup(
     version=get_version(),
     license="MIT",
     description="A package to analyze project dependencies.",
+    long_description=get_description(),
+    long_description_content_type="test/markdown",
     author="Olivier Beaulieu",
     author_email="beaulieu.olivier@hotmail.com",
     url="https://github.com/OLBEA20/twelve-step",

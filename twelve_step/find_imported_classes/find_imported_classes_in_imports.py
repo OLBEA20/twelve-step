@@ -1,7 +1,8 @@
-from jivago_streams import Stream
 from typing import List, Tuple
 
-IMPORT_KEYWORD = " import "
+from jivago_streams import Stream
+
+from twelve_step.constants import IMPORT_KEYWORD
 
 
 def find_imported_classes_in_imports(file, imports: List[str]) -> Tuple[str, List[str]]:
@@ -16,12 +17,12 @@ def find_imported_classes_in_imports(file, imports: List[str]) -> Tuple[str, Lis
     return (file, classes)
 
 
-def _import_location_in_line(import_line: str) -> int:
-    return import_line.index(IMPORT_KEYWORD) + len(IMPORT_KEYWORD)
-
-
 def _keep_only_classes_portion_of_import_line(import_line: str) -> str:
     return import_line[_import_location_in_line(import_line) :]
+
+
+def _import_location_in_line(import_line: str) -> int:
+    return import_line.index(IMPORT_KEYWORD) + len(IMPORT_KEYWORD)
 
 
 def _extract_classes(classes: str) -> List[str]:
