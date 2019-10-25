@@ -19,7 +19,7 @@ setup(
     license="MIT",
     description="A package to analyze project dependencies.",
     long_description=get_description(),
-    long_description_content_type="test/markdown",
+    long_description_content_type="text/markdown",
     author="Olivier Beaulieu",
     author_email="beaulieu.olivier@hotmail.com",
     url="https://github.com/OLBEA20/twelve-step",
